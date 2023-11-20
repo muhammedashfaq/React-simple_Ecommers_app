@@ -2,18 +2,19 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {toast} from "react-hot-toast";
 import { useState } from "react";
+import { RouteObjects } from "../../Routes/RouteObjests";
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
-    number: "",
+    name: "",
+    email: "",
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
-    cpassword: "",
+    
   });
   const handlechangeinput = (event) => {
     const { name, value } = event.target;
@@ -33,12 +34,12 @@ const Register = () => {
       e.preventDefault();
       const error = {};
 
-      if (!formData.username) {
-        error.username = "please enter a name";
+      if (!formData.name) {
+        error.name = "please enter a name";
       }
 
-      if (!formData.number) {
-        error.number = "please enter a number";
+      if (!formData.email) {
+        error.email = "please enter a email";
       }
 
       if (!formData.password) {
@@ -50,15 +51,15 @@ const Register = () => {
         return;
       } else {
         const response = await axios.post(
-          "http://localhost:5000/register",
+          "http://localhost:5000/user/register",
           formData
         );
 
         if (response.data.success) {
-          toast.success('Good Job!');
-          navigate("/login");
+          toast.success(response.data.message);
+          navigate('/');
         } else {
-          alert("eror");
+          toast.error(response.data.message);
         }
       }
     } catch (error) {
@@ -79,27 +80,27 @@ const Register = () => {
           <input
             onChange={handlechangeinput}
             type="text"
-            name="username"
+            name="name"
             id="email"
             className="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
           />
-          {errorMessage.username && (
-            <p className="text-red-500 text-md">{errorMessage.username}</p>
+          {errorMessage.name && (
+            <p className="text-red-500 text-md">{errorMessage.name}</p>
           )}
         </div>
         <div>
           <label  className="block mb-2 text-sm">
-            Contact number
+            Email ID
           </label>
           <input
             onChange={handlechangeinput}
             type="text"
-            name="number"
+            name="email"
             id="email"
             className="w-full px-3 py-2 border rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
           />
-          {errorMessage.number && (
-            <p className="text-red-500 text-md">{errorMessage.number}</p>
+          {errorMessage.email && (
+            <p className="text-red-500 text-md">{errorMessage.email}</p>
           )}
         </div>
         <div>
@@ -140,7 +141,7 @@ const Register = () => {
           already have accout?
           <a
             rel="noopener noreferrer"
-            href="/login"
+            href={RouteObjects.Login}
             className="hover:underline dark:text-violet-400"
           >
             Sign up

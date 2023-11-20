@@ -6,9 +6,10 @@ const jwt = require("jsonwebtoken");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+
   const isExist = await User.findOne({ email });
   if (isExist) {
-    res.status(200).send({ message: "user alredy exist", success: false });
+    return  res.status(200).send({ message: "user alredy exist", success: false });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   const userData = new User({
@@ -39,7 +40,7 @@ const loginUser = asyncHandler(async (req, res) => {
       res.status(200).send({ message: "Password Not Match", success: false });
     } else {
       const token = jwt.sign(
-        { _id: user.id, name: user.name, role: "USER" },
+        { id: user._id, name: user.name, role: "USER" },
         process.env.JWT_SECRET_USER,
         { expiresIn: "1d" }
       );

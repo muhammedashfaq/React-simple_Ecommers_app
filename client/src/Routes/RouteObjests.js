@@ -1,5 +1,12 @@
 export const RouteObjects = {
     Register: "/register",
-    Login:"/login"
+    Home :"/home",
+    Products:"/products",
+    Cart:"/cart",
+    Login:"/",
+
+    AdminLogin:"/admin",
+    AdminHome:"/adminhome",
+    AddProducts:"/addproducts"
 }
     
