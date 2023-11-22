@@ -37,7 +37,7 @@ export const addtocart = async (productId) => {
   }
 };
 
-export const fetchCartData = async (productId) => {
+export const fetchCartData = async () => {
   try {
     const response = await axios.post("http://localhost:5000/user/fetchcartdata",{}
     ,{
@@ -55,3 +55,61 @@ export const fetchCartData = async (productId) => {
     throw error;
   }
 };
+
+export const deleteItems = async (productId) => {
+  try {
+    const response = await axios.post("http://localhost:5000/user/cartitemdelete",{productId:productId}
+    ,{
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+
+    if (response.data.success) {
+      return response;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const placetheOrder = async (orderData) => {
+  try {
+    const response = await axios.post("http://localhost:5000/user/placeorder",orderData
+    ,{
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+
+    if (response.data.success) {
+      return response;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const orderpayment = async (payment, order, id) => {
+  try {
+    
+    const response =axios.post("http://localhost:5000/user/payment",{payment:payment,order:order,id:id},{
+            headers:{
+                Authorization: "Bearer " + localStorage.getItem("token"),
+
+            }
+        })
+        if (response.data.success) {
+            return response;
+          } else {
+            throw new Error(response.data.message);
+          }
+        } catch (error) {
+          throw error;
+        }
+      }

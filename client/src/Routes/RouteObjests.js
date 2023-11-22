@@ -7,6 +7,8 @@ export const RouteObjects = {
 
     AdminLogin:"/admin",
     AdminHome:"/adminhome",
-    AddProducts:"/addproducts"
+    AddProducts:"/addproducts",
+    Checkout:"/checkout",
+    placed:"/orderplaced"
 }
-    
+        

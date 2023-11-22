@@ -5,6 +5,7 @@ const { sendVerifymail } = require("../Config/nodeMailer");
 const jwt = require("jsonwebtoken");
 const ProductsDb = require("../Models/productModel");
 const Cart = require("../Models/cartModel");
+const orderDB = require("../Models/orderModel") 
 //reguster User ====
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -75,7 +76,7 @@ const fetchProduct = asyncHandler(async (req, res) => {
 });
 
 
-
+//==ADDTOCART==//
 
 const productToCart = asyncHandler(async (req, res) => {
   const id = req.userId;
@@ -96,7 +97,7 @@ const productToCart = asyncHandler(async (req, res) => {
         const addtoCart = new Cart({
           user: user._id,
           products: [{
-            productId:productId,
+            productId: productId,
             ProductName: product.name,
             price: product.price,
             image: product.image,
@@ -105,7 +106,7 @@ const productToCart = asyncHandler(async (req, res) => {
         await addtoCart.save();
         res.status(200).send({ message: "added", success: true });
       } else {
-        
+
         const productIndex = await Usercart.products.findIndex(
           (productItem) => productItem.productId == productId
         )
@@ -116,29 +117,42 @@ const productToCart = asyncHandler(async (req, res) => {
             { $inc: { "products.$.quantity": 1 } }
           )
           return res.status(200).send({ message: "added", success: true });
-        }else{
-         
-            await Cart.findOneAndUpdate(
-              { user: user._id },
-              {
-                $push: {
-                  products: { productId: productId, price: product.price,ProductName:product.name,image:product.image },
-                },
-              }
-            );
-            return res.status(200).send({ message: "added", success: true });
-          
+        } else {
+
+          await Cart.findOneAndUpdate(
+            { user: user._id },
+            {
+              $push: {
+                products: { productId: productId, price: product.price, ProductName: product.name, image: product.image },
+              },
+            }
+          );
+          return res.status(200).send({ message: "added", success: true });
+
         }
       }
     }
   }
-}
-
-)
-
-
-const fetchCartData =asyncHandler(async(req,res)=>{
-
+})
+const fetchCartData = asyncHandler(async (req, res) => {
+  
+  const id = req.userId;
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    return res
+      .status(200)
+      .send({ message: "user does not exisr", success: false });
+    } else {
+      const cartData = await Cart.findOne({ user: user._id }).populate("products.productId")
+      const totalPrice = cartData.products.reduce((acc, product) => {
+        return acc + product.quantity * product.price;
+      }, 0);
+      res.status(200).send({ message: "fetched", success: true, data: cartData, totalPrice: totalPrice })
+    }
+    
+  })
+  //==DELETE CART ITEM==//
+const itemDeleteFromCart = asyncHandler(async (req, res) => {
   const id = req.userId;
   const user = await User.findOne({ _id: id });
   if (!user) {
@@ -146,21 +160,74 @@ const fetchCartData =asyncHandler(async(req,res)=>{
       .status(200)
       .send({ message: "user does not exisr", success: false });
   } else {
+    const { productId } = req.body
+    await Cart.findOneAndUpdate({ user: user._id }, {
+      $pull: { products: { _id: productId } }
+    })
+    res
+      .status(200)
+      .send({ message: "user does not exisr", success: true });
+}})
+const placeTheOrder = asyncHandler(async(req,res)=>{
+  const id = req.userId;
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    return res
+      .status(200)
+      .send({ message: "user does not exisr", success: false });
+  } else {
+    const {price,address,paymentmethod}=req.body
+    const status = paymentmethod === "cashOnDelivery" ? "placed" :"pending"
+    const usercart = await Cart.findOne({ user: user._id });
+    const product = usercart.products
+    const newOrder = new orderDB({
+      user:user._id,
+      username:user.name,
+      paymentMethod:paymentmethod,
+      products:product,
+      totalAmount:price,
+      status:status,
+      address:address,
+      Date:Date.now()
+    })
+    const ordersave = await newOrder.save()
+    if(ordersave){
+      await Cart.deleteOne({user:user._id})
+      res.status(200).send({message:"Order Placed", success:true,payment:paymentmethod,      
+      data:ordersave, orderId:ordersave._id
+})}}})
 
-    const cartData = await Cart.findOne({user:user._id}).populate("products.productId")
-    const totalPrice = cartData.products.reduce((acc, product) => {
-      return acc + product.quantity * product.price;
-    }, 0);
 
-    console.log(totalPrice)
-    res.status(200).send({message:"fetched",success:true,data:cartData,totalPrice:totalPrice})
-  }
+const onlinePayment = asyncHandler(async(req,res)=>{
+  const id = req.userId;
+  const user = await User.findOne({ _id: id });
+  if (!user) {
+    return res
+      .status(200)
+      .send({ message: "user does not exisr", success: false });
+    } else {
+      const details = req.body
+      console.log(req.body,'jjjjjjjjjjjj')
 
-})
+      const statusUpdat =  await orderDB.findByIdAndUpdate(
+          { _id: details.order.receipt },
+          { $set: { status: "placed" } }
+        );
+        if(statusUpdat){
+          await orderDB.findByIdAndUpdate(
+            { _id: details.order.receipt },
+            { $set: { paymentId: details.payment.razorpay_payment_id } }
+          )
+          res
+        .status(200)
+        .send({ message: "done", success: true })}}})
 module.exports = {
   registerUser,
   loginUser,
   fetchProduct,
   productToCart,
-  fetchCartData
+  fetchCartData,
+  itemDeleteFromCart,
+  placeTheOrder,
+  onlinePayment
 };

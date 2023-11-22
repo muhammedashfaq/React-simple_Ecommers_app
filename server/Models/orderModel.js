@@ -5,21 +5,39 @@ const orderSchema = new mongoose.Schema(
     user: {
       type: mongoose.Types.ObjectId,
     },
-    ProductName: {
+    username: {
       type: String,
       required: this.true,
     },
-    quantity: {
-      type: Number,
-      default: 1,
-    },
-    image: {
-      type: Array,
-    },
+    paymentMethod: {
+      type: String,
+  },
+  products: [
+  {
+      productId: {
+          type: mongoose.Types.ObjectId,
+          ref: "product",
+          required: true,
+      },
+      quantity: {
+          type: Number,
+          required: true,
+      },
+  }],
 
     totalAmount: {
       type: Number,
     },
+    status :{
+      type : String
+  },
+
+    paymentId :{
+      type : String
+  },
+  address :{
+    type : String
+},
 
     Date: {
       type: Date,

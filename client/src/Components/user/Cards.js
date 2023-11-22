@@ -13,7 +13,7 @@ const Cards = () => {
       const response = await addtocart(prodcutId);
       response.data.success
         ? Swal.fire({
-            position: "centre",
+            position: "center",
             icon: "success",
             title: "Added To Cart",
             showConfirmButton: false,
@@ -28,8 +28,6 @@ const Cards = () => {
     try {
       const response = await fetchProductData();
       if (response.data.success) {
-        toast.success(response.data.message);
-        console.log(response, "res");
         setproducts(response.data.data);
         setFilteredProducts(response.data.data)
       } else {
