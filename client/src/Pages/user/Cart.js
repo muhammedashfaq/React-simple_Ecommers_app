@@ -5,11 +5,11 @@ import CartPage from '../../Components/user/Cart'
 
 const Cart = () => {
   return (
-    <div>
+    <div >
 <Header/>
 <CartPage />
 
-<Footer />
+{/* <Footer /> */}
 
     </div>
   )

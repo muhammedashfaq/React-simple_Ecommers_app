@@ -5,6 +5,7 @@ const Products = () => {
   return (
     <div className='mt-24  px-10 py-8'>
         <div>
+        
          <Cards />
 
         </div>

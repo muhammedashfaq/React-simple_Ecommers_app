@@ -9,7 +9,7 @@ const ProductPage = () => {
     <div>
 <Header/>
 <Products />
-<Footer />
+{/* <Footer /> */}
 
     </div>
   )
