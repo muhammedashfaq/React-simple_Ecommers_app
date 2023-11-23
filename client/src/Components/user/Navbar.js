@@ -1,21 +1,27 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { RouteObjects } from '../../Routes/RouteObjests'
 import React from 'react'
 
 const Home = () => {
 	const navigate = useNavigate()
+	const location = useLocation();
+  
+	const isActive = (route) => {
+	  return location.pathname === route;
+	};
 	return (
 		<div className="p-4 dark:bg-gray-800 dark:text-gray-100 fixed top-0 w-screen">
 			<div className="container flex justify-between h-16 mx-auto">
 				<ul className="items-stretch hidden space-x-3 lg:flex">
 					<li className="flex">
-						<a rel="noopener noreferrer" href={RouteObjects.Home} className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent dark:text-violet-400 dark:border-violet-400">Home</a>
+					
+						<a rel="noopener noreferrer" href={RouteObjects.Home} className={`flex items-center px-4 -mb-1  ${isActive(RouteObjects.Home) ? `border-b-2 dark:border-transparent  dark:text-violet-400 dark:border-violet-400` :""}`}>Home</a>
 					</li>
 					<li className="flex">
-						<a rel="noopener noreferrer" href={RouteObjects.Products} className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent">Shop</a>
+						<a rel="noopener noreferrer" href={RouteObjects.Products} className={`flex items-center px-4 -mb-1  ${isActive(RouteObjects.Products) ? `border-b-2 dark:border-transparent  dark:text-violet-400 dark:border-violet-400` :""}`}>Shop</a>
 					</li>
 					<li className="flex">
-						<a rel="noopener noreferrer" href={RouteObjects.Cart} className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent">Cart</a>
+						<a rel="noopener noreferrer" href={RouteObjects.Cart} className={`flex items-center px-4 -mb-1  ${isActive(RouteObjects.Cart) ? `border-b-2 dark:border-transparent  dark:text-violet-400 dark:border-violet-400` :""}`}>Cart</a>
 					</li>
 					
 				</ul>
