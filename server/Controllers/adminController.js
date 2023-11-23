@@ -73,7 +73,27 @@ const addproduct = asyncHandler(async (req, res) => {
     }
   }
 });
+
+
+
+//GetProduct details to front-End ===
+const fetchProduct = asyncHandler(async (req, res) => {
+  const id = req.adminId;
+  const admin = await User.findOne({ _id: id });
+  if (!admin) {
+    return res
+      .status(200)
+      .send({ message: "user does not exisr", success: false });
+  } else {
+    const productData = await ProductsDb.find();
+    res
+      .status(200)
+      .send({ message: "fetched", success: true, data: productData });
+  }
+});
 module.exports = {
   adminLogin,
   addproduct,
+  fetchProduct
+
 };

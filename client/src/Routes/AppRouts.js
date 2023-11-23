@@ -14,12 +14,22 @@ import AdminHome from "../Pages/admin/AdminHome";
 import AddProducts from "../Pages/admin/AddProduct";
 import CheckoutPage from "../Pages/user/checkoutPage";
 import OrderPlacedpage from "../Pages/user/OrderPlacedpage";
+import { useSelector } from "react-redux";
+
 
 
 const AppRoutes = () => {
+  const { loading } = useSelector((state) => state.alerts);
+
   return (
     <div>
-      {/* //loder */}
+      {loading && (
+        <div className="flex justify-center items-center bg-slate-950 opacity-60 fixed top-0 left-0 w-full h-full z-50 space-x-3">
+          <div className="w-4 h-4 rounded-full  animate-pulse dark:bg-white"></div>
+          <div className="w-4 h-4 rounded-full  animate-pulse dark:bg-white"></div>
+          <div className="w-4 h-4 rounded-full animate-pulse dark:bg-white"></div>
+        </div>
+      )}
       <Toaster position="bottom-center" reverseOrder={false} />
       <Routes>
         {/* User */}

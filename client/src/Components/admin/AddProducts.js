@@ -10,7 +10,7 @@ const AddProducts = () => {
     description: "",
     image: null,
   });
-  const [errorMessages,setErrorMessages]=useState({
+  const [errorMessages, setErrorMessages] = useState({
     name: "",
     price: "",
     description: "",
@@ -26,9 +26,9 @@ const AddProducts = () => {
     }));
 
 
-    setErrorMessages((pre)=>({
+    setErrorMessages((pre) => ({
       ...pre,
-      [name]:""
+      [name]: ""
     }))
   };
   const handleInputchangeImage = (event) => {
@@ -39,19 +39,19 @@ const AddProducts = () => {
         image: file,
       }));
     }
-   
+
   };
 
   const formSubmit = async (e) => {
     try {
       e.preventDefault();
 
-      const errors=productFormValidation(formData)
-      
+      const errors = productFormValidation(formData)
+
       if (!Object.values(errors).every((value) => value === "")) {
         setErrorMessages(errors);
         return;
-      }else{
+      } else {
         const response = await addProduct(formData)
 
 
@@ -68,7 +68,7 @@ const AddProducts = () => {
         }
 
 
-        }
+      }
     } catch (error) {
       toast.error("somthing went wrong in catch");
       console.log(error);
@@ -77,11 +77,13 @@ const AddProducts = () => {
   };
 
   return (
-    <div className="pt-24">
-      <div classNameName="">
+
+
+    <div className="pt-24 ">
+      <div className=" ">
         <div className="w-11/12 p-12 bg-white sm:w-8/12 md:w-1/2 lg:w-5/12">
           <h1 className="text-xl font-semibold flex justify-between">
-          
+
             <span className="font-normal">Add Product Here</span>
             <span>X</span>
           </h1>
@@ -101,11 +103,11 @@ const AddProducts = () => {
                   placeholder="Products Name"
                   onChange={handleInputchange}
                   className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none rounded-sm focus:outline-none focus:bg-gray-300 focus:shadow-inner"
-                  
+
                 />
                 {errorMessages.name && (
-            <p className="text-red-500 text-md">{errorMessages.name}</p>
-          )}
+                  <p className="text-red-500 text-md">{errorMessages.name}</p>
+                )}
               </span>
               <span className="w-1/2">
                 <label
@@ -122,11 +124,11 @@ const AddProducts = () => {
                   onChange={handleInputchange}
                   autocomplete="family-name"
                   className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none rounded-sm focus:outline-none focus:bg-gray-300 focus:shadow-inner"
-                  
+
                 />
                 {errorMessages.price && (
-            <p className="text-red-500 text-md">{errorMessages.price}</p>
-          )}
+                  <p className="text-red-500 text-md">{errorMessages.price}</p>
+                )}
               </span>
             </div>
 
@@ -144,11 +146,11 @@ const AddProducts = () => {
               placeholder="Products Details..."
               autocomplete="description"
               className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none rounded-sm focus:outline-none focus:bg-gray-300 focus:shadow-inner"
-              
+
             />
             {errorMessages.description && (
-            <p className="text-red-500 text-md">{errorMessages.description}</p>
-          )}
+              <p className="text-red-500 text-md">{errorMessages.description}</p>
+            )}
 
             <label
               for="image"
@@ -163,11 +165,11 @@ const AddProducts = () => {
               autocomplete="image"
               onChange={handleInputchangeImage}
               className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none rounded-xl  focus:bg-gray-300 focus:shadow-inner"
-              
+
             />
             {errorMessages.image && (
-            <p className="text-red-500 text-md">{errorMessages.image}</p>
-          )}
+              <p className="text-red-500 text-md">{errorMessages.image}</p>
+            )}
             <button
               type="submit"
               className="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-violet-800 rounded-xl shadow-lg focus:outline-none hover:bg-gray-900 hover:shadow-none"
@@ -178,6 +180,7 @@ const AddProducts = () => {
         </div>
       </div>
     </div>
+
   );
 };
 

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { RouteObjects } from '../../Routes/RouteObjests';
 
 const Checkout = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const [paymentMethod, setPaymentMethod] = useState('')
     const [address, setAddress] = useState("")
     const location = useLocation();
@@ -25,82 +25,58 @@ const Checkout = () => {
             }
             e.preventDefault()
             const response = await placetheOrder(orderData)
-
             if (response.data.success) {
                 if (response.data.payment === "cashOnDelivery") {
-                   navigate(RouteObjects.placed)
+                    navigate(RouteObjects.placed)
                 } else if (response.data.payment === "onlinePayment") {
-                 razorpayPayment(response.data.data, response.data.orderId);
-
-                
-                  
+                    razorpayPayment(response.data.data, response.data.orderId);
                 }
-            } else {
-                toast.error(response.data.message)
-            }
+            } else { toast.error(response.data.message) }
         } catch (error) {
             console.log(error);
             toast.error("something went wrong1")
-        }}
-
-
-
- function razorpayPayment(order, id) {
-    let key = process.env.REACT_APP_RAZORID
-    var options = {
-      key: "rzp_test_QK6YRj6TBJfBBw",
-      amount: order.totalAmount * 100,
-      currency: "INR",
-      name: "HL ENTERPRISES",
-      description: "Pay Your Advance Amount Here",
-      image:"",
-      order_id: order.id,
-      handler: function (response) {
-        verifyPayment(response, order, id);
-      },
-      prefill: {
-        name: "Gaurav Kumar",
-        email: "gaurav.kumar@example.com",
-        contact: "9000090000",
-      },
-      notes: {
-        address: "Razorpay Corporate Office",
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
-
-    var rzp1 = new window.Razorpay(options);
-    rzp1.open();
-  }
-  const verifyPayment = (payment, order, id) => {
-    PaymentUpdate(payment, order, id);
-  };
-
-
-  const PaymentUpdate = async (payment, order, id) => {
-   
-    try {
-        const response = await orderpayment(payment, order, id)
-        
-        if(response.data.success){
-            toast.success("hahahhaha")
-            navigate(RouteObjects.placed)
-                
-        }else{
-            toast.error(response.data.message)
         }
-        
-    } catch (error) {
-        console.log(error)
-        toast.error("someting went wrong")
     }
-        
-  };
-
-
-
+    function razorpayPayment(order, id) {
+        let key = process.env.REACT_APP_RAZORID
+        var options = {
+            key: "rzp_test_QK6YRj6TBJfBBw",
+            amount: order.totalAmount * 100,
+            currency: "INR",
+            name: "HL ENTERPRISES",
+            description: "Pay Your Advance Amount Here",
+            image: "",
+            order_id: order.id,
+            handler: function (response) {
+                verifyPayment(response, order, id);
+            },
+            prefill: {
+                name: "Gaurav Kumar",
+                email: "gaurav.kumar@example.com",
+                contact: "9000090000",
+            },
+            notes: {
+                address: "Razorpay Corporate Office",
+            },
+            theme: {
+                color: "#3399cc",
+            }
+        }
+        var rzp1 = new window.Razorpay(options);
+        rzp1.open();
+    }
+    const verifyPayment = (payment, order, id) => {
+        PaymentUpdate(payment, order, id);
+    }
+    const PaymentUpdate = async (payment, order, id) => {
+        try {
+            const response = await orderpayment(payment, order, id)
+            response.data.success ? navigate(RouteObjects.placed) : toast.error(response.data.message)
+        } catch (error) {
+            console.log(error)
+            toast.error("someting went wrong catch")
+        }
+    }
     return (
         <div>
             <div className='mt-20 px-10 '>

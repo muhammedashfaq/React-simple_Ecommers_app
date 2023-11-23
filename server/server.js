@@ -1,4 +1,4 @@
-const express =require("express")
+const express = require("express")
 const app = express()
 const cors = require("cors")
 const path = require("path")
@@ -11,8 +11,8 @@ app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/user",require("./Routes/userRoutes"))
-app.use("/admin",require("./Routes/adminRoutes"))
+app.use("/user", require("./Routes/userRoutes"))
+app.use("/admin", require("./Routes/adminRoutes"))
 
 const port = process.env.PORT || 5000
-app.listen(port,()=>console.log(`server connected on port no ${port}`))
+app.listen(port, () => console.log(`server connected on port no ${port}`))

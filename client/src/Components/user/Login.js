@@ -4,9 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { RouteObjects } from "../../Routes/RouteObjests";
+import { hideloading, showloading } from "../../Redux/alertSlice";
+import { useDispatch } from "react-redux";
+
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -45,10 +50,14 @@ const Login = () => {
         setErrorMessage(errors);
         return;
       } else {
+        dispatch(showloading());
+
         const response = await axios.post(
           "http://localhost:5000/user/login",
           formData
         );
+        dispatch(hideloading());
+
 
         if (response.data.success) {
           toast.success(response.data.message);
@@ -59,6 +68,8 @@ const Login = () => {
         }
       }
     } catch (error) {
+      dispatch(hideloading());
+
       console.log(error);
     }
   };

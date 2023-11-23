@@ -4,8 +4,12 @@ import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import { deleteItems, fetchCartData, } from './userUtil/api';
 import { RouteObjects } from '../../Routes/RouteObjests';
+import { hideloading, showloading } from '../../Redux/alertSlice';
+import { useDispatch } from 'react-redux';
 
 const Crat = () => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate()
   const [cart, setcart] = useState([])
   const [price, setprice] = useState(null)
@@ -49,7 +53,11 @@ const Crat = () => {
   }
   const getCartData = async () => {
     try {
+      dispatch(showloading());
+
       const response = await fetchCartData();
+      dispatch(hideloading());
+
       if (response.data.success) {
         setcart(response.data.data.products);
         setprice(response.data.totalPrice)
@@ -58,6 +66,8 @@ const Crat = () => {
         toast.error(response.data.message);
       }
     } catch (error) {
+      dispatch(hideloading());
+
       toast.error("something went wrong catch");
     }
   };

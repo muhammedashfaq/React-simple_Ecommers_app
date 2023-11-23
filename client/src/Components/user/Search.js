@@ -7,7 +7,7 @@ const SearchBar = ({ products, setFilteredProducts }) => {
 
     const filteredProducts = products.filter((items) => {
 
-     return items.name.toLowerCase().includes(searchItem.toLowerCase())
+      return items.name.toLowerCase().includes(searchItem.toLowerCase())
 
     })
     setFilteredProducts(filteredProducts)

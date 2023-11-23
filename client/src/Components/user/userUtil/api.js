@@ -1,7 +1,7 @@
 import axios from "axios";
 export const fetchProductData = async () => {
   try {
-    const response = await axios.post("http://localhost:5000/user/fetchProduct",{},{
+    const response = await axios.post("http://localhost:5000/user/fetchProduct", {}, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -20,12 +20,12 @@ export const fetchProductData = async () => {
 
 export const addtocart = async (productId) => {
   try {
-    const response = await axios.post("http://localhost:5000/user/addtocart",{productId:productId}
-    ,{
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
+    const response = await axios.post("http://localhost:5000/user/addtocart", { productId: productId }
+      , {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
 
     if (response.data.success) {
       return response;
@@ -39,12 +39,12 @@ export const addtocart = async (productId) => {
 
 export const fetchCartData = async () => {
   try {
-    const response = await axios.post("http://localhost:5000/user/fetchcartdata",{}
-    ,{
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
+    const response = await axios.post("http://localhost:5000/user/fetchcartdata", {}
+      , {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
 
     if (response.data.success) {
       return response;
@@ -58,12 +58,12 @@ export const fetchCartData = async () => {
 
 export const deleteItems = async (productId) => {
   try {
-    const response = await axios.post("http://localhost:5000/user/cartitemdelete",{productId:productId}
-    ,{
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
+    const response = await axios.post("http://localhost:5000/user/cartitemdelete", { productId: productId }
+      , {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
 
     if (response.data.success) {
       return response;
@@ -77,12 +77,12 @@ export const deleteItems = async (productId) => {
 
 export const placetheOrder = async (orderData) => {
   try {
-    const response = await axios.post("http://localhost:5000/user/placeorder",orderData
-    ,{
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
+    const response = await axios.post("http://localhost:5000/user/placeorder", orderData
+      , {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
 
     if (response.data.success) {
       return response;
@@ -97,19 +97,19 @@ export const placetheOrder = async (orderData) => {
 
 export const orderpayment = async (payment, order, id) => {
   try {
-    
-    const response =axios.post("http://localhost:5000/user/payment",{payment:payment,order:order,id:id},{
-            headers:{
-                Authorization: "Bearer " + localStorage.getItem("token"),
 
-            }
-        })
-        if (response.data.success) {
-            return response;
-          } else {
-            throw new Error(response.data.message);
-          }
-        } catch (error) {
-          throw error;
-        }
+    const response = axios.post("http://localhost:5000/user/payment", { payment: payment, order: order, id: id }, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+
       }
+    })
+    if (response.data.success) {
+      return response;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error;
+  }
+}
