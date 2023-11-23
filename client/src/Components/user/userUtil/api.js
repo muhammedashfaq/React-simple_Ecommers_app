@@ -113,3 +113,44 @@ export const orderpayment = async (payment, order, id) => {
     throw error;
   }
 }
+
+
+export const cartDecrement = async (productId) => {
+  try {
+    const response = axios.post("http://localhost:5000/user/decrement", {id:productId }, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+
+      }
+      });
+
+    if (response.data.success) {
+      return response;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+export const cartIncrement = async (productId) => {
+  try {
+
+    const response = axios.post("http://localhost:5000/user/increment", { id:productId }, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+
+      }
+    })
+    if (response.data.success) {
+      return response;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error;
+  }
+}

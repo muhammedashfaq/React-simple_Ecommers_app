@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
-import { deleteItems, fetchCartData, } from './userUtil/api';
+import { cartDecrement, cartIncrement, deleteItems, fetchCartData, } from './userUtil/api';
 import { RouteObjects } from '../../Routes/RouteObjests';
 import { hideloading, showloading } from '../../Redux/alertSlice';
 import { useDispatch } from 'react-redux';
@@ -13,11 +13,75 @@ const Crat = () => {
   const navigate = useNavigate()
   const [cart, setcart] = useState([])
   const [price, setprice] = useState(null)
+  const getCartData = async () => {
+    try {
+      dispatch(showloading());
+
+      const response = await fetchCartData();
+      dispatch(hideloading());
+
+      if (response.data.success) {
+        setcart(response.data.data.products);
+        setprice(response.data.totalPrice)
+        return response.data.data.products
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      dispatch(hideloading());
+
+      toast.error("something went wrong catch");
+    }
+  };
   useEffect(() => {
     getCartData()
   }, [])
+  
+  //===Cart decrement
+  const decrement = async (decrementId,productId,quantity)=>{
+    try {
+      if(quantity === 1){
+
+       deleteItem(productId)
+       getCartData();
+      }else{
+        const response = await cartDecrement(decrementId)
+
+        console.log(response,'res');
+        if (response.data.success) {
+          getCartData();
+        } else {
+          toast.error(response.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error)
+        toast.error("something went wrong in catch")
+    }
+
+  }
+  //====Cart Increment
+  const increment = async(incrementId)=>{
+    try {
+      const response = await cartIncrement(incrementId)
+
+      console.log('hai');
+  
+      if (response.data.success) {
+
+        getCartData();
+      } else {
+        
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error)
+        toast.error("something went wrong in catch")
+    }
+  }
   const deleteItem = async (productid) => {
     try {
+      console.log(productid);
       const result = Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -51,26 +115,7 @@ const Crat = () => {
       console.log(error)
     }
   }
-  const getCartData = async () => {
-    try {
-      dispatch(showloading());
 
-      const response = await fetchCartData();
-      dispatch(hideloading());
-
-      if (response.data.success) {
-        setcart(response.data.data.products);
-        setprice(response.data.totalPrice)
-        return response.data.data.products
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      dispatch(hideloading());
-
-      toast.error("something went wrong catch");
-    }
-  };
   const handleCheckout = async () => {
     navigate(RouteObjects.Checkout, {
       state: {
@@ -88,21 +133,21 @@ const Crat = () => {
             {cart?.length > 0 ? (
               cart?.map((items, index) =>
               (<div key={index} className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start ">
-                <img src={items.image} alt="product-image" className="w-full rounded-lg sm:w-40" />
+                <img src={items?.image} alt="product-image" className="w-full rounded-lg sm:w-40" />
                 <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                   <div className="mt-5 sm:mt-0">
-                    <h2 className="text-lg font-bold text-gray-900">{items.ProductName}</h2>
-                    <p className="mt-1 text-xs text-gray-700">${items.price} * {items.quantity}-Qty </p>
+                    <h2 className="text-lg font-bold text-gray-900">{items?.ProductName}</h2>
+                    <p className="mt-1 text-xs text-gray-700">${items?.price} * {items?.quantity}-Qty </p>
                   </div>
                   <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                     <div className="flex items-center border-gray-100">
-                      <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
-                      <input className="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value="2" min="1" />
-                      <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
+                      <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={(()=>decrement(items?.productId,items?._id,items?.quantity))}> - </span>
+                      <input  className="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value={ items?.quantity}  />
+                      <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50" onClick={(()=>increment(items?.productId))}> + </span>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <p className="text-sm">{items.productId.description}</p>
-                      <svg onClick={() => deleteItem(items._id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
+                      <p className="text-sm">{items?.productId.description}</p>
+                      <svg onClick={() => deleteItem(items?._id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                       </svg>
 

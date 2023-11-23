@@ -71,7 +71,11 @@ const Checkout = () => {
     const PaymentUpdate = async (payment, order, id) => {
         try {
             const response = await orderpayment(payment, order, id)
-            response.data.success ? navigate(RouteObjects.placed) : toast.error(response.data.message)
+            if(response.data.success){
+                navigate(RouteObjects.placed)
+            }else{
+                toast.error(response.data.message)
+            }
         } catch (error) {
             console.log(error)
             toast.error("someting went wrong catch")

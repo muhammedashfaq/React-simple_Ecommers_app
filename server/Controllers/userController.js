@@ -230,6 +230,49 @@ const onlinePayment = asyncHandler(async (req, res) => {
   }
 })
 
+const cartIncrement = asyncHandler(async (req, res) => {
+
+  const idbody = req.userId;
+  const user = await User.findOne({ _id: idbody });
+  if (!user) {
+    return res
+      .status(200)
+      .send({ message: "user does not exisr", success: false });
+  } else {
+    const { id } = req.body
+    await Cart.updateOne(
+      { user: idbody, "products.productId": id._id },
+      { $inc: { "products.$.quantity": 1 } }
+    );
+
+    return res
+      .status(200)
+      .send({ message: "user does not exisr", success: true })
+
+  }
+})
+
+const cartDecrement = asyncHandler(async (req, res) => {
+
+  const idbody = req.userId;
+  const user = await User.findOne({ _id: idbody });
+  if (!user) {
+    return res
+      .status(200)
+      .send({ message: "user does not exist", success: false });
+  } else {
+    const { id } = req.body
+
+    await Cart.updateOne(
+      { user: idbody, "products.productId": id._id },
+      { $inc: { "products.$.quantity": -1 } }
+    )
+    res
+      .status(200)
+      .send({ message: "ok", success: true })
+  }
+})
+
 
 module.exports = {
   registerUser,
@@ -239,5 +282,7 @@ module.exports = {
   fetchCartData,
   itemDeleteFromCart,
   placeTheOrder,
-  onlinePayment
+  onlinePayment,
+  cartDecrement,
+  cartIncrement
 };
