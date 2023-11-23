@@ -43,8 +43,8 @@ const Register = () => {
         error.name = "please enter a name";
       }
 
-      if (!formData.email) {
-        error.email = "please enter a email";
+      if (!formData.email|| !/\S+@\S+\.\S+/.test(formData.email)) {
+        error.email = "please enter a valid email";
       }
 
       if (!formData.password) {
@@ -77,8 +77,8 @@ const Register = () => {
       console.log(error);
     }
   };
-  return <div className="w-screen h-screen flex justify-center items-center bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-stone-400 via-zinc-200 to-teal-300">
-    <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gradient-to-t from-orange-400 to-sky-400 dark:text-gray-100">
+  return <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-r from-gray-700 via-gray-900 to-black">
+    <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gradient-to-b from-gray-200 via-gray-400 to-gray-600">
       <div className="mb-8 text-center">
         <h1 className="my-3 text-4xl font-bold">Register</h1>
       </div>

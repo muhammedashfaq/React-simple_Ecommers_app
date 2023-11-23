@@ -21,9 +21,8 @@ const Crat = () => {
       dispatch(hideloading());
 
       if (response.data.success) {
-        setcart(response.data.data.products);
+        setcart(response.data.data);
         setprice(response.data.totalPrice)
-        return response.data.data.products
       } else {
         toast.error(response.data.message);
       }

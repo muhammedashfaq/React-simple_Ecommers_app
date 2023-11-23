@@ -24,12 +24,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
-  const savedData = userData.save();
-  //   if (savedData) {
-  //     const otpGenarated = Math.floor(1000 + Math.random() * 9999);
-
-  //     sendVerifymail(name, email, otpGenarated);
-  //   }
+   await userData.save();
 
   res.status(200).send({ message: "user details saved", success: true });
 });
@@ -40,7 +35,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!user) {
     res.status(200).send({ message: "This User Not Exist", success: false });
   }
-  if (user.isVerified) {
+
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) {
       res.status(200).send({ message: "Password Not Match", success: false });
@@ -54,9 +49,7 @@ const loginUser = asyncHandler(async (req, res) => {
         .status(200)
         .send({ message: "Successfully LoggedIn", success: true, data: token });
     }
-  } else {
-    res.status(200).send({ message: "This User Not verified", success: false });
-  }
+ 
 });
 
 //GetProduct details to front-End ===
@@ -144,10 +137,11 @@ const fetchCartData = asyncHandler(async (req, res) => {
       .send({ message: "user does not exisr", success: false });
   } else {
     const cartData = await Cart.findOne({ user: user._id }).populate("products.productId")
+    const cartDataProducts =cartData.products
     const totalPrice = cartData.products.reduce((acc, product) => {
       return acc + product.quantity * product.price;
     }, 0);
-    res.status(200).send({ message: "fetched", success: true, data: cartData, totalPrice: totalPrice })
+    res.status(200).send({ message: "fetched", success: true, data: cartDataProducts, totalPrice: totalPrice })
   }
 
 })

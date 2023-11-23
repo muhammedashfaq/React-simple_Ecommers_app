@@ -74,8 +74,8 @@ const Login = () => {
     }
   };
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-stone-400 via-zinc-200 to-teal-300">
-      <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gradient-to-t from-orange-400 to-sky-400 dark:text-gray-100">
+    <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-r from-gray-700 via-gray-900 to-black">
+      <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gradient-to-b from-gray-200 via-gray-400 to-gray-600">
         <div className="mb-8 text-center">
           <h1 className="my-3 text-4xl font-bold">Sign in</h1>
         </div>
@@ -122,21 +122,14 @@ const Login = () => {
             </div>
           </div>
           <div className="space-y-2">
-            <div className="flex justify-evenly">
-              <button
-                type="submit"
-                className="w-full px-8 py-3 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900"
-              >
-                Sign in
-              </button>
-
-              <button
-                type="submit"
-                className="w-full px-8 py-3  ml-2 font-semibold rounded-md bg-slate-300 "
-              >
-                <FcGoogle className="w-20 h-8" />
-              </button>
-            </div>
+          <div>
+            <button
+              type="submit"
+              className="w-full px-8 py-3 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900"
+            >
+              Login
+            </button>
+          </div>
             <p className="px-6 text-sm text-center dark:text-gray-400">
               Don't have an account yet?
               <a
