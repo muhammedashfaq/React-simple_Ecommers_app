@@ -47,13 +47,7 @@ Welcome to our MERN eCommerce site! This full-stack application is built using t
 - **React Scripts**: Scripts and configurations for React applications.
 - **Tailwind CSS**: Utility-first CSS framework for styling.
 
-## Getting Started
 
-Follow these steps to set up and run the application locally. For more detailed instructions, refer to the [Installation Guide](./docs/installation.md).
-
-## Usage
-
-Explore our eCommerce site and experience the smooth shopping journey. For a detailed walkthrough, refer to the [User Guide](./docs/user-guide.md).
 
 ## Project Structure
 
@@ -62,18 +56,6 @@ The project follows a modular structure. Here's a brief overview:
 - **`/server`**: Backend server code.
 - **`/client`**: Frontend React application.
 
-## Contributing
 
-We welcome contributions! Follow the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md) to get started.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
-## Acknowledgements
-
-- [List of acknowledgments or resources used]
-
----
 
 Happy Shopping! 🎉✨
