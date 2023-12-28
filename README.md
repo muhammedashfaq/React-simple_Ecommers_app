@@ -1,6 +1,7 @@
 # MERN eCommerce Site 🛍️
 
 ![Project Image](./server/project.png)
+![Project Image](./server/pro2.png)
 
 ## Project Overview
 
