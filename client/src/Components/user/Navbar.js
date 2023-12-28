@@ -1,16 +1,18 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RouteObjects } from '../../Routes/RouteObjests'
-import React from 'react'
+import React, { useState } from 'react'
+import {  useUserContext } from '../../context/contactContext'
 
 const Home = () => {
+	const {userName} =useUserContext()
 	const navigate = useNavigate()
 	const location = useLocation();
-  
+	const [mobileMenu,setmMbileMenu]=useState(false)
 	const isActive = (route) => {
 	  return location.pathname === route;
 	};
 	return (
-		<div className="p-4 dark:bg-gray-800 dark:text-gray-100 fixed top-0 w-screen">
+		<div className="p-4 dark:bg-gray-800 dark:text-gray-100 fixed top-0 w-screen z-50">
 			<div className="container flex justify-between h-16 mx-auto">
 				<ul className="items-stretch hidden space-x-3 lg:flex">
 					<li className="flex">
@@ -22,6 +24,9 @@ const Home = () => {
 					</li>
 					<li className="flex">
 						<a rel="noopener noreferrer" href={RouteObjects.Cart} className={`flex items-center px-4 -mb-1  ${isActive(RouteObjects.Cart) ? `border-b-2 dark:border-transparent  dark:text-violet-400 dark:border-violet-400` :""}`}>Cart</a>
+					</li>
+					<li className="flex">
+						<a rel="noopener noreferrer" href={RouteObjects.Home} className="flex items-center px-4 -mb-1  border-b-2 dark:border-transparent ">{userName}</a>
 					</li>
 					
 				</ul>
@@ -52,12 +57,32 @@ const Home = () => {
 
 					</button>
 				</div>
-				<button title="Open menu" type="button" className="p-4 lg:hidden">
+				{mobileMenu ? (<button title="Open menu" type="button" className="p-4 lg:hidden " onClick={()=>setmMbileMenu(false)}>
+				<span class="material-symbols-outlined">
+close
+</span>
+				</button>) : (<button title="Open menu" type="button" className="p-4 lg:hidden " onClick={()=>setmMbileMenu(true)}>
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 dark:text-gray-100">
 						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
 					</svg>
-				</button>
+				</button>)   }
 			</div>
+			{mobileMenu && (
+        <div className="lg:hidden h-auto ">
+          <ul>
+            <li className='p-2'>
+              <a href={RouteObjects.Home}>Home</a>
+            </li>
+			
+            <li className='p-2'>
+              <a href={RouteObjects.Products}>Shop</a>
+            </li>
+            <li className='p-2'>
+              <a href={RouteObjects.Cart}>Cart</a>
+            </li>
+          </ul>
+        </div>
+      )}
 		</div>
 	)
 }

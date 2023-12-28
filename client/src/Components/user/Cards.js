@@ -6,10 +6,17 @@ import Swal from "sweetalert2";
 import SearchBar from "./Search";
 import { hideloading, showloading } from "../../Redux/alertSlice";
 import { useDispatch } from "react-redux";
+// import { ProductproviderContext } from "../../context/ProductContext";
 const Cards = () => {
   const dispatch = useDispatch();
 
   const [products, setproducts] = useState([]);
+
+  // const {constextProducts} =ProductproviderContext()
+  // setproducts(constextProducts)
+
+  // // console.log(products,',myproooooooo')
+
   const [filteredProducts, setFilteredProducts] = useState([])
 
   const addToCart = async (prodcutId) => {

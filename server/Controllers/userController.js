@@ -33,12 +33,12 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: email });
   if (!user) {
-    res.status(200).send({ message: "This User Not Exist", success: false });
+    res.status(401).send({ message: "This User Not Exist", success: false });
   }
 
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) {
-      res.status(200).send({ message: "Password Not Match", success: false });
+      res.status(401).send({ message: "Password Not Match", success: false });
     } else {
       const token = jwt.sign(
         { id: user._id, name: user.name, role: "USER" },
@@ -209,17 +209,14 @@ const onlinePayment = asyncHandler(async (req, res) => {
 
 
     const statusUpdated = await orderDB.findByIdAndUpdate(
-      { _id: details.id, user: details.order.user },
-      { $set: { status: "placed" } }
+      details.id,
+      { $set: { status: "placed", paymentId: details.payment.razorpay_payment_id } }
     );
     if (statusUpdated) {
-      await orderDB.findByIdAndUpdate(
-        { _id: details.id, user: details.order.user },
-        { $set: { paymentId: details.payment.razorpay_payment_id } }
-      )
+      
       res
         .status(200)
-        .send({ message: "done", success: true })
+        .send({ message: "done", ordersuccess: true })
     }
   }
 })

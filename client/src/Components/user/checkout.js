@@ -43,7 +43,7 @@ const Checkout = () => {
             key: "rzp_test_QK6YRj6TBJfBBw",
             amount: order.totalAmount * 100,
             currency: "INR",
-            name: "HL ENTERPRISES",
+            name: "Time Zone Watches",
             description: "Pay Your Advance Amount Here",
             image: "",
             order_id: order.id,
@@ -71,7 +71,7 @@ const Checkout = () => {
     const PaymentUpdate = async (payment, order, id) => {
         try {
             const response = await orderpayment(payment, order, id)
-            if(response.data.success){
+            if(response.data.ordersuccess){
                 navigate(RouteObjects.placed)
             }else{
                 toast.error(response.data.message)

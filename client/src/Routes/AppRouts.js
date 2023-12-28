@@ -23,6 +23,7 @@ const AppRoutes = () => {
 
   return (
     <div>
+      
       {loading && (
         <div className="flex justify-center items-center bg-slate-950 opacity-60 fixed top-0 left-0 w-full h-full z-50 space-x-3">
           <div className="w-4 h-4 rounded-full  animate-pulse dark:bg-white"></div>
@@ -38,11 +39,14 @@ const AppRoutes = () => {
         {/* Admin */}
         <Route path={RouteObjects.AdminLogin} element={<PublicRoutesAdmin> <AdminLogin /></PublicRoutesAdmin>} />
         {/* User */}
+               
+
         <Route path={RouteObjects.Home} element={<ProtectedRoutesUser> <Home /></ProtectedRoutesUser>} />
-        <Route path={RouteObjects.Products} element={<ProtectedRoutesUser><Products /></ProtectedRoutesUser>} />
+        <Route path={RouteObjects.Products} element={<ProtectedRoutesUser> <Products /></ProtectedRoutesUser>} />
         <Route path={RouteObjects.Cart} element={<ProtectedRoutesUser><Cart /></ProtectedRoutesUser>} />
         <Route path={RouteObjects.Checkout} element={<ProtectedRoutesUser><CheckoutPage /></ProtectedRoutesUser>} />
         <Route path={RouteObjects.placed} element={<ProtectedRoutesUser><OrderPlacedpage /></ProtectedRoutesUser>} />
+
         {/* Admin */}
         <Route path={RouteObjects.AdminHome} element={<ProtectedRoutesAdmin><AdminHome /></ProtectedRoutesAdmin>} />
         <Route path={RouteObjects.AddProducts} element={<ProtectedRoutesAdmin><AddProducts /></ProtectedRoutesAdmin>} />

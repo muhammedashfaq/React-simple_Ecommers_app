@@ -104,7 +104,7 @@ export const orderpayment = async (payment, order, id) => {
 
       }
     })
-    if (response.data.success) {
+    if (response.data.ordersuccess) {
       return response;
     } else {
       throw new Error(response.data.message);
